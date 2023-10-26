@@ -18,7 +18,7 @@ class App {
       if (!randomNumber.includes(num)) randomNumber.push(num);
     }
 
-    return randomNumber;
+    this.computerNumber = randomNumber;
   }
 
   async setPlayerNumber() {
@@ -41,11 +41,11 @@ class App {
     return playerNumber;
   }
 
-  printCount(computerNumber, playerNumber) {
+  printCount(playerNumber) {
     let ballCount = 0;
     let strikeCount = 0;
 
-    computerNumber.forEach((item, index) =>
+    this.computerNumber.forEach((item, index) =>
       item === playerNumber[index]
         ? (strikeCount += 1)
         : playerNumber.includes(item) && (ballCount += 1),
@@ -81,11 +81,11 @@ class App {
     Console.print('숫자 야구 게임을 시작합니다.');
 
     while (this.status === 'isPlaying') {
-      const couputerNumber = this.setComputerNumber();
+      this.setComputerNumber();
 
       while (!(this.status === 'isSuccess')) {
-        const userNumber = await this.setPlayerNumber();
-        this.printCount(couputerNumber, userNumber);
+        const playerNumber = await this.setPlayerNumber();
+        this.printCount(playerNumber);
       }
 
       Console.print('3개의 숫자를 모두 맞히셨습니다! 게임 종료');
