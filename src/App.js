@@ -1,4 +1,4 @@
-import { Random, Console } from "@woowacourse/mission-utils";
+import { Random, Console } from '@woowacourse/mission-utils';
 
 class App {
   constructor(status) {
@@ -21,20 +21,20 @@ class App {
   }
 
   async setUserNum() {
-    const inputNumber = await Console.readLineAsync("숫자를 입력해주세요 : ");
+    const inputNumber = await Console.readLineAsync('숫자를 입력해주세요 : ');
 
     if (!inputNumber.match(/^[1-9]{3}$/)) {
-      throw new Error("[ERROR] 세자리 숫자를 입력해주세요.");
+      throw new Error('[ERROR] 세자리 숫자를 입력해주세요.');
     }
 
-    const userNum = inputNumber.split("").map((item) => +item);
+    const userNum = inputNumber.split('').map(item => +item);
 
-    const duplicate = (arr) => {
+    const duplicate = arr => {
       return arr.some((item, index) => arr.indexOf(item) !== index);
     };
 
     if (duplicate(userNum)) {
-      throw new Error("[ERROR] 숫자가 중복되지 않도록 입력해주세요.");
+      throw new Error('[ERROR] 숫자가 중복되지 않도록 입력해주세요.');
     }
 
     return userNum;
@@ -45,43 +45,50 @@ class App {
     let strikeCount = 0;
 
     computerNum.forEach((item, index) =>
-      item === userNum[index] ? ++strikeCount : userNum.includes(item) && ++ballCount
+      item === userNum[index]
+        ? (strikeCount += 1)
+        : userNum.includes(item) && (ballCount += 1),
     );
 
-    const ballMessage = ballCount ? `${ballCount}볼` : "";
-    const strikeMessage = strikeCount ? `${strikeCount}스트라이크` : "";
-    const messageSpace = strikeCount && ballCount ? " " : "";
+    const ballMessage = ballCount ? `${ballCount}볼` : '';
+    const strikeMessage = strikeCount ? `${strikeCount}스트라이크` : '';
+    const messageSpace = strikeCount && ballCount ? ' ' : '';
 
-    const message = !strikeCount && !ballCount ? "낫싱" : ballMessage + messageSpace + strikeMessage;
+    const message =
+      !strikeCount && !ballCount
+        ? '낫싱'
+        : ballMessage + messageSpace + strikeMessage;
     Console.print(message);
 
-    this.setStatus(strikeCount === 3 ? "isSuccess" : "isPlaying");
+    this.setStatus(strikeCount === 3 ? 'isSuccess' : 'isPlaying');
   }
 
   async resetGame() {
-    const input = await Console.readLineAsync("게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.\n");
+    const input = await Console.readLineAsync(
+      '게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.\n',
+    );
 
-    if (!(input == 1 || input == 2)) {
-      throw new Error("[ERROR] 값을 잘못 입력하였습니다. 게임을 종료합니다.");
+    if (!(input === '1' || input === '2')) {
+      throw new Error('[ERROR] 값을 잘못 입력하였습니다. 게임을 종료합니다.');
     }
 
-    if (input == 1) this.setStatus("isPlaying");
-    if (input == 2) this.setStatus("isQuit");
+    if (input === '1') this.setStatus('isPlaying');
+    if (input === '2') this.setStatus('isQuit');
   }
 
   async play() {
-    Console.print("숫자 야구 게임을 시작합니다.");
-    this.setStatus("isPlaying");
+    Console.print('숫자 야구 게임을 시작합니다.');
+    this.setStatus('isPlaying');
 
-    while (this.status === "isPlaying") {
+    while (this.status === 'isPlaying') {
       const couputerNum = this.setComputerNum();
 
-      while (!(this.status === "isSuccess")) {
+      while (!(this.status === 'isSuccess')) {
         const userNum = await this.setUserNum();
         this.printCount(couputerNum, userNum);
       }
 
-      Console.print("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
+      Console.print('3개의 숫자를 모두 맞히셨습니다! 게임 종료');
       await this.resetGame();
     }
   }
