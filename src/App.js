@@ -54,10 +54,10 @@ class App {
     const strikeMessage = strikeCount ? `${strikeCount}스트라이크` : '';
     const messageSpace = strikeCount && ballCount ? ' ' : '';
 
-    const message =
-      !strikeCount && !ballCount
-        ? '낫싱'
-        : ballMessage + messageSpace + strikeMessage;
+    const message = !(strikeCount || ballCount)
+      ? '낫싱'
+      : ballMessage + messageSpace + strikeMessage;
+
     Console.print(message);
 
     this.setStatus(strikeCount === 3 ? 'isSuccess' : 'isPlaying');
