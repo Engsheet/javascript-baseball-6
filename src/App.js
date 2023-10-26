@@ -1,8 +1,8 @@
 import { Random, Console } from '@woowacourse/mission-utils';
 
 class App {
-  constructor(status) {
-    this.status = status;
+  constructor() {
+    this.status = 'isPlaying';
   }
 
   setStatus(value) {
@@ -78,7 +78,6 @@ class App {
 
   async play() {
     Console.print('숫자 야구 게임을 시작합니다.');
-    this.setStatus('isPlaying');
 
     while (this.status === 'isPlaying') {
       const couputerNum = this.setComputerNum();
