@@ -62,7 +62,7 @@ class App {
 
     Console.print(message);
 
-    this.setStatus(strikeCount === 3 ? 'isSuccess' : 'isPlaying');
+    this.setStatus(strikeCount === 3 && 'isSuccess');
   }
 
   async resetGame() {
