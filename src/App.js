@@ -3,51 +3,52 @@ import { Random, Console } from '@woowacourse/mission-utils';
 class App {
   constructor() {
     this.status = 'isPlaying';
+    this.computerNumber = [];
   }
 
   setStatus(value) {
     this.status = value;
   }
 
-  setComputerNum() {
-    const computerNum = [];
+  setComputerNumber() {
+    const randomNumber = [];
 
-    while (computerNum.length < 3) {
+    while (randomNumber.length < 3) {
       const num = Random.pickNumberInRange(1, 9);
-      if (!computerNum.includes(num)) computerNum.push(num);
+      if (!randomNumber.includes(num)) randomNumber.push(num);
     }
 
-    return computerNum;
+    return randomNumber;
   }
 
-  async setUserNum() {
+  async setPlayerNumber() {
     const inputNumber = await Console.readLineAsync('숫자를 입력해주세요 : ');
 
     if (!inputNumber.match(/^[1-9]{3}$/)) {
       throw new Error('[ERROR] 세자리 숫자를 입력해주세요.');
     }
 
-    const userNum = inputNumber.split('').map(item => +item);
+    const playerNumber = inputNumber.split('').map(item => +item);
 
     const duplicate = arr => {
       return arr.some((item, index) => arr.indexOf(item) !== index);
     };
 
-    if (duplicate(userNum)) {
+    if (duplicate(playerNumber)) {
       throw new Error('[ERROR] 숫자가 중복되지 않도록 입력해주세요.');
     }
 
-    return userNum;
+    return playerNumber;
   }
 
-  printCount(computerNum, userNum) {
+  printCount(computerNumber, playerNumber) {
     let ballCount = 0;
     let strikeCount = 0;
 
-    computerNum.forEach((item, index) =>
-      item === userNum[index]
+    computerNumber.forEach((item, index) =>
+      item === playerNumber[index]
         ? (strikeCount += 1)
-        : userNum.includes(item) && (ballCount += 1),
+        : playerNumber.includes(item) && (ballCount += 1),
     );
 
     const ballMessage = ballCount ? `${ballCount}볼` : '';
@@ -80,11 +81,11 @@ class App {
     Console.print('숫자 야구 게임을 시작합니다.');
 
     while (this.status === 'isPlaying') {
-      const couputerNum = this.setComputerNum();
+      const couputerNumber = this.setComputerNumber();
 
       while (!(this.status === 'isSuccess')) {
-        const userNum = await this.setUserNum();
-        this.printCount(couputerNum, userNum);
+        const userNumber = await this.setPlayerNumber();
+        this.printCount(couputerNumber, userNumber);
       }
 
       Console.print('3개의 숫자를 모두 맞히셨습니다! 게임 종료');
