@@ -4,6 +4,7 @@ class App {
   constructor() {
     this.status = 'isPlaying';
     this.computerNumber = [];
+    this.playerNumber = [];
   }
 
   setStatus(value) {
@@ -38,17 +39,17 @@ class App {
       throw new Error('[ERROR] 숫자가 중복되지 않도록 입력해주세요.');
     }
 
-    return playerNumber;
+    this.playerNumber = playerNumber;
   }
 
-  printCount(playerNumber) {
+  printCount() {
     let ballCount = 0;
     let strikeCount = 0;
 
     this.computerNumber.forEach((item, index) =>
-      item === playerNumber[index]
+      item === this.playerNumber[index]
         ? (strikeCount += 1)
-        : playerNumber.includes(item) && (ballCount += 1),
+        : this.playerNumber.includes(item) && (ballCount += 1),
     );
 
     const ballMessage = ballCount ? `${ballCount}볼` : '';
@@ -84,8 +85,8 @@ class App {
       this.setComputerNumber();
 
       while (!(this.status === 'isSuccess')) {
-        const playerNumber = await this.setPlayerNumber();
-        this.printCount(playerNumber);
+        await this.setPlayerNumber();
+        this.printCount();
       }
 
       Console.print('3개의 숫자를 모두 맞히셨습니다! 게임 종료');
